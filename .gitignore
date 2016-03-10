@@ -1,0 +1,7 @@
+.vagrant
+
+# Folder for self signed certificates
+certs
+
+# Folder for sharing IDP metadata with SP
+metadata
