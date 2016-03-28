@@ -11,8 +11,6 @@ end
 # https://docs.vagrantup.com.
 Vagrant.configure(2) do |config|
 
-    config.landrush.tld = "vagrant.test"
-
     config.vm.define "idp" do |idp|
 
         idp.vm.box = "boxcutter/centos71"
