@@ -41,6 +41,9 @@ This provisions three virtual machines to demonstrate a deployment of a Shibbole
         * `sudo su`
         * `systemctl start ecp-sshd`
 
+        To run the server manually with full debugging output, run
+        `LD_LIBRARY_PATH=/opt/shibboleth/lib64 ./moonshot-ssh/sbin/sshd -p 10022 -ddd -r`.
+
     * In the other, test connecting as a user.
         * `vagrant ssh sp`
         * The username and password of a user on the primary IDP are stored in `~/.gss_eap_id`.
