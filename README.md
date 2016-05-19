@@ -50,3 +50,29 @@ This provisions three virtual machines to demonstrate a deployment of a Shibbole
         * `./moonshot-ssh/bin/ssh -p 10022 -vvv -l "" $(hostname)`
         * You should be now be logged in as a different user. The mappings from username stored in `~/.gss_eap_id` to
           shell user can be found in [aa/accounts.sql](/aa/accounts.sql).
+
+## mech_saml_ec development:
+
+To use this environment for development of [mech_saml_ec](https://github.com/fedushare/mech_saml_ec):
+
+1. Clone the mech_saml_ec repository.
+
+2. Add a [synced folder](https://www.vagrantup.com/docs/synced-folders/virtualbox.html) to Vagrantfile to mount the
+   mech_saml_ec directory on the SP VM.
+    ```ruby
+    config.vm.define "sp" do |sp|
+        ...
+        sp.vm.synced_folder "/path/to/mech_saml_ec", "/mech_saml_ec"
+        ...
+    end
+    ```
+
+3. Change the path to mech_saml_ec in `sp/ecp-ssh/build.sh`.
+    ```Shell
+    MECH_SAML_DIR=/mech_saml_ec
+    ```
+
+4. Build mech_saml_ec.
+    ```Shell
+    sh /vagrant/sp/ecp-ssh/build.sh
+    ```
