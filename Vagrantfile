@@ -72,7 +72,7 @@ Vagrant.configure(2) do |config|
 
     end
 
-    config.vm.define "sp" do |sp|
+    config.vm.define "sp", primary: true do |sp|
 
         sp.vm.box = "boxcutter/centos71"
 
