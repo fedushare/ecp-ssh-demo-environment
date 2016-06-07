@@ -55,7 +55,7 @@ if [ ! -f Makefile ]; then
     ./configure --with-krb5=${KERBEROS_BUILD_DIR}
 fi
 
-if [ $1 == "clean" ]; then
+if [ $1 = "clean" ]; then
   make clean
 fi
 INCLUDES=-I${KERBEROS_BUILD_DIR}/include LIBS="-L${KERBEROS_BUILD_DIR}/lib -lgssapi_krb5" make
