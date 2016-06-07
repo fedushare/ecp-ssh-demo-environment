@@ -42,12 +42,14 @@ This provisions three virtual machines to demonstrate a deployment of a Shibbole
         * `systemctl start ecp-sshd`
 
         To run the server manually with full debugging output, run
-        `LD_LIBRARY_PATH=/opt/shibboleth/lib64 ./moonshot-ssh/sbin/sshd -p 10022 -ddd -r`.
+        `LD_LIBRARY_PATH=/opt/shibboleth/lib64 ./moonshot-ssh/sbin/sshd -p 10022 -ddd`.
+        A shortcut script for this is at `/vagrant/scripts/run_sshd`.
 
     * In the other, test connecting as a user.
         * `vagrant ssh sp`
         * The username and password of a user on the primary IDP are stored in `~/.gss_eap_id`.
         * `./moonshot-ssh/bin/ssh -p 10022 -vvv -l "" $(hostname)`
+          A shortcut script for this is at `/vagrant/scripts/run_ssh`
         * You should be now be logged in as a different user. The mappings from username stored in `~/.gss_eap_id` to
           shell user can be found in [aa/accounts.sql](/aa/accounts.sql).
 
