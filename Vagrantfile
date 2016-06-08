@@ -74,10 +74,14 @@ Vagrant.configure(2) do |config|
 
     config.vm.define "sp", primary: true do |sp|
 
-        sp.vm.box = "boxcutter/centos71"
+        sp.vm.box = "boxcutter/centos71-desktop"
 
         sp.landrush.enabled = true
         sp.vm.hostname = "sp.vagrant.test"
+
+        sp.vm.provider "virtualbox" do |v|
+          v.gui = true
+        end
 
         sp.vm.provision :shell, path: "./shared/tools.sh"
         sp.vm.provision :shell, path: "./shared/chrony.sh"

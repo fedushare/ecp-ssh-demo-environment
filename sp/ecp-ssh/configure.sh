@@ -13,10 +13,10 @@ EOF
 
 chmod +x /etc/profile.d/mech_saml_ec_debug.sh
 
-cat <<EOF > /home/vagrant/.gss_eap_id
-jsmith
-password
-EOF
+#cat <<EOF > /home/vagrant/.gss_eap_id
+#jsmith
+#password
+#EOF
 
 for u in user1 user2 user3; do
     useradd $u --password $u

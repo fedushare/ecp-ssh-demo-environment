@@ -52,7 +52,7 @@ fi
 cd ${MECH_SAML_DIR}
 if [ ! -f Makefile ]; then
     ./autogen.sh
-    ./configure --with-krb5=${KERBEROS_BUILD_DIR}
+    ./configure --with-krb5=${KERBEROS_BUILD_DIR} --with-libmoonshot
 fi
 
 if [ $1 = "clean" ]; then

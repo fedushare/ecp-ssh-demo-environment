@@ -35,7 +35,12 @@ This provisions three virtual machines to demonstrate a deployment of a Shibbole
     * Login with a username and password listed in [idp/identities.sql](/idp/identities.sql).
     * Look in the Apache environment section to see attributes released by the IdP and attribute authority.
 
-6. Open two terminal windows.
+6. Open the [Moonshot Identity Selector](https://wiki.moonshot.ja.net/display/Moonshot/User+Guide) by running `moonshot`
+   in a terminal in a graphical environment. Add an identity by following the instructions in the
+   [user guide](https://wiki.moonshot.ja.net/display/Moonshot/User+Guide). The username and password should match
+   one of the identities listed in [idp/identities.sql](/idp/identities.sql).
+
+7. Open two terminal windows.
     * In one, start the ECP sshd process.
         * `vagrant ssh sp`
         * `sudo su`
@@ -45,11 +50,13 @@ This provisions three virtual machines to demonstrate a deployment of a Shibbole
         `LD_LIBRARY_PATH=/opt/shibboleth/lib64 ./moonshot-ssh/sbin/sshd -p 10022 -ddd`.
         A shortcut script for this is at `/vagrant/scripts/run_sshd`.
 
-    * In the other, test connecting as a user.
+    * In the other, test connecting as a user. In order to use the Moonshot Identity Selector, this must be run in a
+      graphical environment.
         * `vagrant ssh sp`
-        * The username and password of a user on the primary IDP are stored in `~/.gss_eap_id`.
         * `./moonshot-ssh/bin/ssh -p 10022 -vvv -l "" $(hostname)`
           A shortcut script for this is at `/vagrant/scripts/run_ssh`
+        * The Moonshot Identity Selector should open and [prompt for an
+          identity](https://wiki.moonshot.ja.net/display/Moonshot/User+Guide#UserGuide-Addingamapping).
         * You should be now be logged in as a different user. The mappings from username stored in `~/.gss_eap_id` to
           shell user can be found in [aa/accounts.sql](/aa/accounts.sql).
 
