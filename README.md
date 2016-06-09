@@ -38,7 +38,8 @@ This provisions three virtual machines to demonstrate a deployment of a Shibbole
 6. Open the [Moonshot Identity Selector](https://wiki.moonshot.ja.net/display/Moonshot/User+Guide) by running `moonshot`
    in a terminal in a graphical environment. Add an identity by following the instructions in the
    [user guide](https://wiki.moonshot.ja.net/display/Moonshot/User+Guide). The username and password should match
-   one of the identities listed in [idp/identities.sql](/idp/identities.sql).
+   one of the identities listed in [idp/identities.sql](/idp/identities.sql). In the issuer field, enter the location
+   of the demo IdP's ECP single sign on service: `https://idp.vagrant.test/idp/profile/SAML2/SOAP/ECP`.
 
 7. Open two terminal windows.
     * In one, start the ECP sshd process.

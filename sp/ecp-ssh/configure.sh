@@ -8,7 +8,6 @@ echo "tls-server-end-point" > /home/vagrant/.gss_saml_ec_cb_type
 
 cat <<EOF > /etc/profile.d/mech_saml_ec_debug.sh
 export MECH_SAML_EC_DEBUG=true
-export SAML_EC_IDP="https://idp.vagrant.test/idp/profile/SAML2/SOAP/ECP"
 EOF
 
 chmod +x /etc/profile.d/mech_saml_ec_debug.sh
