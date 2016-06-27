@@ -83,6 +83,8 @@ Vagrant.configure(2) do |config|
           v.gui = true
         end
 
+        sp.vm.provision :shell, inline: "killall packagekitd"
+
         sp.vm.provision :shell, path: "./shared/tools.sh"
         sp.vm.provision :shell, path: "./shared/chrony.sh"
         sp.vm.provision :shell, path: "./sp/sp.sh"
