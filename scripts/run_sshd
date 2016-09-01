@@ -3,4 +3,4 @@
 set -e
 set -x
 
-LD_LIBRARY_PATH=/opt/shibboleth/lib64 /home/vagrant/moonshot-ssh/sbin/sshd -p 10022 -ddd
+LD_LIBRARY_PATH=/opt/shibboleth/lib64 /home/vagrant/moonshot-ssh/sbin/sshd -p 10022 -d "$@"
