@@ -81,3 +81,15 @@ To use this environment for development of [mech_saml_ec](https://github.com/fed
     ```Shell
     sh /vagrant/sp/ecp-ssh/build.sh
     ```
+
+To run without Moonshot Identity Selector:
+
+1. Remove identity selector.
+   ```Shell
+   yum remove moonshot-ui moonshot-ui-devel
+   ```
+
+2. Set IDP environment variable.
+   ```Shell
+   export SAML_EC_IDP="https://idp.vagrant.test/idp/profile/SAML2/SOAP/ECP"
+   ```
