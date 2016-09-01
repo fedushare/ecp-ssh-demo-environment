@@ -72,17 +72,12 @@ To use this environment for development of [mech_saml_ec](https://github.com/fed
     ```ruby
     config.vm.define "sp" do |sp|
         ...
-        sp.vm.synced_folder "/path/to/mech_saml_ec", "/mech_saml_ec"
+        sp.vm.synced_folder "/path/to/mech_saml_ec", "/home/vagrant/mech_saml_ec"
         ...
     end
     ```
 
-3. Change the path to mech_saml_ec in `sp/ecp-ssh/build.sh`.
-    ```Shell
-    MECH_SAML_DIR=/mech_saml_ec
-    ```
-
-4. Build mech_saml_ec.
+3. Build mech_saml_ec.
     ```Shell
     sh /vagrant/sp/ecp-ssh/build.sh
     ```
