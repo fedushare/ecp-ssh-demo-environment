@@ -1,6 +1,6 @@
 # FeduShare demo environment
 
-This provisions three virtual machines to demonstrate a deployment of a Shibboleth ECP enabled SSH server.
+This provisions four virtual machines to demonstrate a deployment of a Shibboleth ECP enabled SSH server.
 
 * Primary IdP - User's home campus IdP
    * Configured for ECP
