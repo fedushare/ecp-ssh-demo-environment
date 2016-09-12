@@ -3,4 +3,4 @@
 set -e
 set -x
 
-/home/vagrant/moonshot-ssh/bin/ssh -p 10022 -l "" "$@" $(hostname)
+/home/vagrant/moonshot-ssh/bin/ssh -p 10022 -l "" "$@" "sp.vagrant.test"

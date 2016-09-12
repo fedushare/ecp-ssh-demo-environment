@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
 
     config.vm.define "idp" do |idp|
 
-        idp.vm.box = "boxcutter/centos71"
+        idp.vm.box = "bento/centos-7.2"
 
         idp.landrush.enabled = true
         idp.vm.hostname = "idp.vagrant.test"
@@ -44,7 +44,7 @@ Vagrant.configure(2) do |config|
 
     config.vm.define "aa" do |aa|
 
-        aa.vm.box = "boxcutter/centos71"
+        aa.vm.box = "bento/centos-7.2"
 
         aa.landrush.enabled = true
         aa.vm.hostname = "aa.vagrant.test"
@@ -72,29 +72,18 @@ Vagrant.configure(2) do |config|
 
     end
 
-    config.vm.define "sp", primary: true do |sp|
+    config.vm.define "sp" do |sp|
 
-        sp.vm.box = "boxcutter/centos71-desktop"
+        sp.vm.box = "bento/centos-7.2"
 
         sp.landrush.enabled = true
         sp.vm.hostname = "sp.vagrant.test"
-
-        sp.vm.provider "virtualbox" do |v|
-          v.gui = true
-        end
-
-        sp.vm.provision :shell, inline: "killall packagekitd"
 
         sp.vm.provision :shell, path: "./shared/tools.sh"
         sp.vm.provision :shell, path: "./shared/chrony.sh"
         sp.vm.provision :shell, path: "./sp/sp.sh"
         sp.vm.provision :shell, path: "./sp/configure.sh"
         sp.vm.provision :shell, path: "./sp/test-web-dir.sh"
-
-        # Install certificates
-        sp.vm.provision :shell, inline: "cp /vagrant/certs/idp.crt /etc/pki/ca-trust/source/anchors/idp.crt"
-        sp.vm.provision :shell, inline: "cp /vagrant/certs/aa.crt /etc/pki/ca-trust/source/anchors/aa.crt"
-        sp.vm.provision :shell, inline: "update-ca-trust"
 
         # Metadata exchange
         sp.vm.provision :shell, path: "./metadata-exchange/sp/add-to-attribute-map.sh"
@@ -106,6 +95,41 @@ Vagrant.configure(2) do |config|
         sp.vm.provision :shell, path: "./sp/ecp-ssh/install.sh"
         sp.vm.provision :shell, path: "./sp/ecp-ssh/build.sh"
         sp.vm.provision :shell, path: "./sp/ecp-ssh/configure.sh"
+
+    end
+
+    config.vm.define "client", primary: true do |client|
+
+        client.vm.box = "bento/centos-7.2"
+
+        client.landrush.enabled = true
+
+        client.vm.provider "virtualbox" do |v|
+            v.gui = true
+        end
+
+        # Install desktop environment
+        client.vm.provision :shell, inline: "yum groupinstall -y 'GNOME Desktop'"
+        client.vm.provision :shell, inline: "systemctl set-default graphical.target"
+
+        client.vm.provision :shell, path: "./shared/tools.sh"
+        client.vm.provision :shell, path: "./shared/chrony.sh"
+
+        # Install Shibboleth SP - required by mech_saml_ec
+        client.vm.provision :shell, inline: "curl 'http://download.opensuse.org/repositories/security://shibboleth/CentOS_7/security:shibboleth.repo' > /etc/yum.repos.d/shibboleth.repo"
+        client.vm.provision :shell, inline: "yum install -y shibboleth"
+        client.vm.provision :shell, inline: "sed -i -e 's/^SELINUX=.*$/SELINUX=disabled/' /etc/selinux/config"
+
+        # Install certificates
+        client.vm.provision :shell, inline: "cp /vagrant/certs/idp.crt /etc/pki/ca-trust/source/anchors/idp.crt"
+        client.vm.provision :shell, inline: "cp /vagrant/certs/aa.crt /etc/pki/ca-trust/source/anchors/aa.crt"
+        client.vm.provision :shell, inline: "update-ca-trust"
+
+        # Install ECP SSH
+        client.vm.provision :shell, path: "./sp/ecp-ssh/install-moonshot.sh"
+        client.vm.provision :shell, path: "./sp/ecp-ssh/install.sh"
+        client.vm.provision :shell, path: "./sp/ecp-ssh/build.sh"
+        client.vm.provision :shell, path: "./sp/ecp-ssh/configure-client.sh"
 
     end
 
