@@ -14,6 +14,7 @@ Vagrant.configure(2) do |config|
     config.vm.define "idp" do |idp|
 
         idp.vm.box = "bento/centos-7.2"
+        idp.vm.box_version = "2.2.9"
 
         idp.landrush.enabled = true
         idp.vm.hostname = "idp.vagrant.test"
@@ -45,6 +46,7 @@ Vagrant.configure(2) do |config|
     config.vm.define "aa" do |aa|
 
         aa.vm.box = "bento/centos-7.2"
+        aa.vm.box_version = "2.2.9"
 
         aa.landrush.enabled = true
         aa.vm.hostname = "aa.vagrant.test"
@@ -75,6 +77,7 @@ Vagrant.configure(2) do |config|
     config.vm.define "sp" do |sp|
 
         sp.vm.box = "bento/centos-7.2"
+        sp.vm.box_version = "2.2.9"
 
         sp.landrush.enabled = true
         sp.vm.hostname = "sp.vagrant.test"
@@ -101,6 +104,7 @@ Vagrant.configure(2) do |config|
     config.vm.define "client", primary: true do |client|
 
         client.vm.box = "bento/centos-7.2"
+        client.vm.box_version = "2.2.9"
 
         client.landrush.enabled = true
 
