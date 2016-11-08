@@ -143,4 +143,6 @@
     <Attribute name="urn:oid:2.5.4.19" id="physicalDeliveryOfficeName"/>
     -->
 
+    <Attribute name="voMemberships" id="voMemberships"/>
+
 </Attributes>

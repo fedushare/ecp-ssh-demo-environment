@@ -1,6 +1,6 @@
 # FeduShare demo environment
 
-This provisions four virtual machines to demonstrate a deployment of a Shibboleth ECP enabled SSH server.
+This provisions several virtual machines to demonstrate a deployment of a Shibboleth ECP enabled SSH server.
 
 * Primary IdP - User's home campus IdP
    * Configured for ECP
@@ -9,7 +9,10 @@ This provisions four virtual machines to demonstrate a deployment of a Shibbolet
    * Runs ECP enabled SSH server
    * Uses Shibboleth attribute query to get local username from attribute authority
 
-* Attribute authority - Run by resource provider
+* Virtual Organization Attribute authority - Run by resource provider
+   * Stores a user's virtual organization memberships and/or other attributes
+
+* Resource Attribute authority - Run by resource provider
    * Stores mapping of a user's EPPN on the primary IdP to their local username on the resource/SP machine
 
 * Client - User's machine
@@ -24,12 +27,12 @@ This provisions four virtual machines to demonstrate a deployment of a Shibbolet
       vagrant plugin install landrush
       ```
 
-2. Provision VMs for Shibboleth identity provider, attribute authority, and service provider.
+2. Provision VMs for Shibboleth identity provider, attribute authorities, and service provider.
    1. Create Shibboleth VMs.
       ```
-      vagrant up idp aa sp
+      vagrant up idp vo-aa resource-aa sp
       ```
-   2. Force IdP and AA to reload SP metadata.
+   2. Force IdP and AAs to reload SP metadata.
       ```
       sh ./scripts/reload-metadata.sh
       ```

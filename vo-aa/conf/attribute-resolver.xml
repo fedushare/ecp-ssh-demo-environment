@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is an EXAMPLE configuration file. While the configuration
+    presented in this example file is semi-functional, it isn't very
+    interesting. It is here only as a starting point for your deployment
+    process.
+
+    Very few attribute definitions and data connectors are demonstrated,
+    and the data is derived statically from the logged-in username and a
+    static example connector.
+
+    Attribute-resolver-full.xml contains more examples of attributes,
+    encoders, and data connectors. Deployers should refer to the Shibboleth
+    documentation for a complete list of components and their options.
+-->
+<resolver:AttributeResolver
+        xmlns:resolver="urn:mace:shibboleth:2.0:resolver"
+        xmlns:pc="urn:mace:shibboleth:2.0:resolver:pc"
+        xmlns:ad="urn:mace:shibboleth:2.0:resolver:ad"
+        xmlns:dc="urn:mace:shibboleth:2.0:resolver:dc"
+        xmlns:enc="urn:mace:shibboleth:2.0:attribute:encoder"
+        xmlns:sec="urn:mace:shibboleth:2.0:security"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:mace:shibboleth:2.0:resolver http://shibboleth.net/schema/idp/shibboleth-attribute-resolver.xsd
+                            urn:mace:shibboleth:2.0:resolver:pc http://shibboleth.net/schema/idp/shibboleth-attribute-resolver-pc.xsd
+                            urn:mace:shibboleth:2.0:resolver:ad http://shibboleth.net/schema/idp/shibboleth-attribute-resolver-ad.xsd
+                            urn:mace:shibboleth:2.0:resolver:dc http://shibboleth.net/schema/idp/shibboleth-attribute-resolver-dc.xsd
+                            urn:mace:shibboleth:2.0:attribute:encoder http://shibboleth.net/schema/idp/shibboleth-attribute-encoder.xsd
+                            urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd">
+
+    <!-- ========================================== -->
+    <!--      Attribute Definitions                 -->
+    <!-- ========================================== -->
+
+    <resolver:AttributeDefinition id="voMemberships" xsi:type="ad:Simple" sourceAttributeID="voNames">
+        <resolver:Dependency ref="db" />
+        <resolver:AttributeEncoder xsi:type="enc:SAML1String" name="voMemberships" encodeType="false" />
+        <resolver:AttributeEncoder xsi:type="enc:SAML2String" name="voMemberships" friendlyName="voMemberships" encodeType="false" />
+    </resolver:AttributeDefinition>
+
+    <!-- ========================================== -->
+    <!--      Data Connectors                       -->
+    <!-- ========================================== -->
+
+    <resolver:DataConnector id="db" xsi:type="dc:RelationalDatabase">
+
+        <dc:ApplicationManagedConnection jdbcDriver="com.mysql.jdbc.Driver"
+                                         jdbcURL="jdbc:mysql://localhost:3306/memberships"
+                                         jdbcUserName="root"
+                                         jdbcPassword="" />
+
+        <dc:QueryTemplate>
+            <![CDATA[
+                SELECT `vo_name` FROM `vo_memberships` WHERE `eppn` = '$requestContext.principalName'
+            ]]>
+        </dc:QueryTemplate>
+
+        <dc:Column columnName="vo_name" attributeID="voNames" />
+
+    </resolver:DataConnector>
+
+    <resolver:PrincipalConnector xsi:type="pc:Direct"
+        id="saml2Direct"
+        nameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" />
+
+</resolver:AttributeResolver>

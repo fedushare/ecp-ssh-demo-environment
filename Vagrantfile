@@ -16,6 +16,10 @@ Vagrant.configure(2) do |config|
         idp.vm.box = "bento/centos-7.2"
         idp.vm.box_version = "2.2.9"
 
+        idp.vm.provider "virtualbox" do |v|
+            v.memory = 1024
+        end
+
         idp.landrush.enabled = true
         idp.vm.hostname = "idp.vagrant.test"
 
@@ -43,7 +47,38 @@ Vagrant.configure(2) do |config|
 
     end
 
-    config.vm.define "aa" do |aa|
+    config.vm.define "vo-aa" do |aa|
+
+        aa.vm.box = "bento/centos-7.2"
+        aa.vm.box_version = "2.2.9"
+
+        aa.landrush.enabled = true
+        aa.vm.hostname = "vo.vagrant.test"
+
+        aa.vm.provision :shell, inline: "cp /vagrant/shared/vars.sh /etc/profile.d/vars.sh; chmod +x /etc/profile.d/vars.sh"
+
+        aa.vm.provision :shell, path: "./shared/tools.sh"
+        aa.vm.provision :shell, path: "./shared/chrony.sh"
+        aa.vm.provision :shell, path: "./shared/mysql.sh"
+        aa.vm.provision :shell, path: "./shared/java.sh"
+        aa.vm.provision :shell, path: "./shared/jetty.sh"
+        aa.vm.provision :shell, path: "./shared/idp.sh"
+        aa.vm.provision :shell, path: "./shared/configure-jetty-for-idp.sh"
+        aa.vm.provision :shell, path: "./shared/mysql-connector-java.sh"
+        aa.vm.provision :shell, path: "./vo-aa/configure-aa.sh"
+
+        # Generate certificate
+        aa.vm.provision :shell, inline: "sh /vagrant/shared/generate_cert.sh vo-aa"
+
+        # Metadata exchange
+        aa.vm.provision :shell, inline: "/bin/cp -f /vagrant/metadata-exchange/shared/metadata-providers.xml /opt/shibboleth-idp/conf/metadata-providers.xml"
+        aa.vm.provision :shell, inline: "mkdir -p /vagrant/metadata; sh /vagrant/metadata-exchange/aa/edit-metadata.sh /opt/shibboleth-idp/metadata/idp-metadata.xml > /vagrant/metadata/vo-aa-metadata.xml"
+
+        aa.vm.provision :shell, inline: "systemctl start idp"
+
+    end
+
+    config.vm.define "resource-aa" do |aa|
 
         aa.vm.box = "bento/centos-7.2"
         aa.vm.box_version = "2.2.9"
@@ -64,11 +99,11 @@ Vagrant.configure(2) do |config|
         aa.vm.provision :shell, path: "./aa/configure-aa.sh"
 
         # Generate certificate
-        aa.vm.provision :shell, inline: "sh /vagrant/shared/generate_cert.sh aa"
+        aa.vm.provision :shell, inline: "sh /vagrant/shared/generate_cert.sh resource-aa"
 
         # Metadata exchange
         aa.vm.provision :shell, inline: "/bin/cp -f /vagrant/metadata-exchange/shared/metadata-providers.xml /opt/shibboleth-idp/conf/metadata-providers.xml"
-        aa.vm.provision :shell, inline: "mkdir -p /vagrant/metadata; sh /vagrant/metadata-exchange/aa/edit-metadata.sh /opt/shibboleth-idp/metadata/idp-metadata.xml > /vagrant/metadata/aa-metadata.xml"
+        aa.vm.provision :shell, inline: "mkdir -p /vagrant/metadata; sh /vagrant/metadata-exchange/aa/edit-metadata.sh /opt/shibboleth-idp/metadata/idp-metadata.xml > /vagrant/metadata/resource-aa-metadata.xml"
 
         aa.vm.provision :shell, inline: "systemctl start idp"
 
@@ -126,7 +161,8 @@ Vagrant.configure(2) do |config|
 
         # Install certificates
         client.vm.provision :shell, inline: "cp /vagrant/certs/idp.crt /etc/pki/ca-trust/source/anchors/idp.crt"
-        client.vm.provision :shell, inline: "cp /vagrant/certs/aa.crt /etc/pki/ca-trust/source/anchors/aa.crt"
+        client.vm.provision :shell, inline: "cp /vagrant/certs/vo-aa.crt /etc/pki/ca-trust/source/anchors/vo-aa.crt"
+        client.vm.provision :shell, inline: "cp /vagrant/certs/resource-aa.crt /etc/pki/ca-trust/source/anchors/resource-aa.crt"
         client.vm.provision :shell, inline: "update-ca-trust"
 
         # Install ECP SSH

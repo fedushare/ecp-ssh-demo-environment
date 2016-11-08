@@ -12,8 +12,13 @@ metadata_provider = """
 
 attribute_resolver = """
         <AttributeResolver type="SimpleAggregation" attributeId="eppn" format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
+            <Entity>https://vo.vagrant.test/idp/shibboleth</Entity>
+            <MetadataProvider type="XML" validate="true" path="/vagrant/metadata/vo-aa-metadata.xml" />
+        </AttributeResolver>
+
+        <AttributeResolver type="SimpleAggregation" attributeId="eppn" format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
             <Entity>https://aa.vagrant.test/idp/shibboleth</Entity>
-            <MetadataProvider type="XML" validate="true" path="/vagrant/metadata/aa-metadata.xml" />
+            <MetadataProvider type="XML" validate="true" path="/vagrant/metadata/resource-aa-metadata.xml" />
         </AttributeResolver>
 """
 
